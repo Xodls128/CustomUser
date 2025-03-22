@@ -19,4 +19,14 @@ class UserManager(BaseUserManager):
         user.set_password(password)
         user.save(using=self._db)
         return user
-    
+
+    def create_supprtuser(self, email, nickname, name, password=None):
+        user = self.create_user(
+            email,
+            password= password,
+            nickname= nickname,
+            name= name
+        )
+        user.is_admin = True
+        user.save(using=self._db)
+        return user

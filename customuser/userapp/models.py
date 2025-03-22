@@ -30,3 +30,25 @@ class UserManager(BaseUserManager):
         user.is_admin = True
         user.save(using=self._db)
         return user
+    
+class User(AbstractBaseUser):
+    id = models.AutoField(primary_key=True)
+    email = models.EmailField(default='', null=False, blank=False, unique=True)
+    nickname = models.CharField(default='', null=False, blank=False, unique=True)
+    name = models.CharField(default='', null=False, blank=False, unique=True)
+
+    #필수필드
+    is_active = models.BooleanField(default=True)
+    is_admin = models.BooleanField(default=True)
+
+    #헬퍼클래스
+    objects = UserManager()
+
+    #사용자의 유저네임 필드는 닉네임으로 설정
+    USERNAME_FIELD ='nickname'
+    
+    #필수로 작성해야하는 필드 설정
+    REQUIRED_FIELDS = ['email', 'name']
+
+    def __str__(self):
+        return self.nickname
